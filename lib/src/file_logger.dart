@@ -158,8 +158,10 @@ class FileLogger
         _fileNumber++;
         String backupFileName = '$filePath${_fileNumber == 0 ? '' : '_$_fileNumber'}';
         var backupFile = File(backupFileName);
+
         if (!await backupFile.exists()) {
-          await file.rename(backupFileName); backedUp = true;
+          await file.rename(backupFileName);
+          backedUp = true;
         }
       }
 
