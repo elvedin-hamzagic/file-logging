@@ -42,20 +42,22 @@ class FileLogger {
   int _sequenceNumber = 0;
   String _logPath = _defaultLogPath;
 
-  LogFormatter _logFormatter = (LogRecord record, int sequenceNumber) =>
-      '[${DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(record.time)}] '
-      '[${record.loggerName.isNotEmpty ? '${record.loggerName}#' : ''}$sequenceNumber] '
-      '[${record.level.name}] '
-      '${record.message} '
-      '${record.error == null ? '' : '(${record.error})'} '
-      '${record.stackTrace == null ? '' : '\n${record.stackTrace}'}'
-      '\n';
+  LogFormatter _logFormatter =
+      (LogRecord record, int sequenceNumber) =>
+          '[${DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(record.time)}] '
+          '[${record.loggerName.isNotEmpty ? '${record.loggerName}#' : ''}$sequenceNumber] '
+          '[${record.level.name}] '
+          '${record.message} '
+          '${record.error == null ? '' : '(${record.error})'} '
+          '${record.stackTrace == null ? '' : '\n${record.stackTrace}'}'
+          '\n';
 
-  FileNameGenerator _fileNameGenerator = (String loggerName, DateTime date) =>
-      '${loggerName.isNotEmpty ? '${loggerName}_' : ''}${DateFormat('yyyyMMdd').format(date)}';
+  FileNameGenerator _fileNameGenerator =
+      (String loggerName, DateTime date) =>
+          '${loggerName.isNotEmpty ? '${loggerName}_' : ''}${DateFormat('yyyyMMdd').format(date)}';
 
-  RecordHandler _recordHandler = (LogRecord record, void Function(LogRecord record) defaultProcessor) =>
-      defaultProcessor(record);
+  RecordHandler _recordHandler =
+      (LogRecord record, void Function(LogRecord record) defaultProcessor) => defaultProcessor(record);
 
   String get name => _logger.name;
   Level get level => _logger.level;

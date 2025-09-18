@@ -44,11 +44,13 @@ void main() {
     );
 
     setUp(() {
-      logger.logFormatter = (LogRecord record, int sequenceNumber) =>
-          '${record.time} [${record.level.name}] ($sequenceNumber): ${record.message}\n';
+      logger.logFormatter =
+          (LogRecord record, int sequenceNumber) =>
+              '${record.time} [${record.level.name}] ($sequenceNumber): ${record.message}\n';
 
-      logger.fileNameGenerator = (String loggerName, DateTime date) =>
-          '${loggerName.isNotEmpty ? '${loggerName}_' : ''}${DateFormat('yyyy-MM-dd').format(date)}';
+      logger.fileNameGenerator =
+          (String loggerName, DateTime date) =>
+              '${loggerName.isNotEmpty ? '${loggerName}_' : ''}${DateFormat('yyyy-MM-dd').format(date)}';
 
       logger.recordHandler = (LogRecord record, void Function(LogRecord record) defaultProcessor) {
         defaultProcessor(record);
