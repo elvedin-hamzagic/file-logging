@@ -1,6 +1,9 @@
 name: file_logs
-description: A file logger which utilizes "logging" package.
-version: 1.0.0
+description: A file logger which utilizes "logging" package. The logger is very
+  flexible, providing ability for the user to change the log format, log file
+  name, and to override record handler to provide custom handling. For example,
+  besides writing to a file, logs can be sent to a remote server.
+version: 1.0.1
 homepage: https://github.com/elvedin-hamzagic/file-logs
 repository: https://github.com/elvedin-hamzagic/file-logs
 issue_tracker: https://github.com/elvedin-hamzagic/file-logs/issues

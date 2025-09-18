@@ -9,13 +9,17 @@ typedef LogFormatter = String Function(LogRecord record, int sequenceNumber);
 typedef FileNameGenerator = String Function(String loggerName, DateTime date);
 typedef RecordHandler = void Function(LogRecord record, void Function(LogRecord record) defaultProcessor);
 
-class FileLogger
-{
+class FileLogger {
   static final String _defaultLogPath = p.join(Platform.environment['HOME'] ?? '', 'logs');
 
-  FileLogger({String name = '', Level level = Level.ALL, this.logToConsole = true,
-    this.logToFile = true, this.maxFileSize = 0, String? logPath}) : _logger = Logger(name)
-  {
+  FileLogger({
+    String name = '',
+    Level level = Level.ALL,
+    this.logToConsole = true,
+    this.logToFile = true,
+    this.maxFileSize = 0,
+    String? logPath,
+  }) : _logger = Logger(name) {
     if (logPath != null) {
       _logPath = logPath;
     }
@@ -57,9 +61,18 @@ class FileLogger
   Level get level => _logger.level;
   String get logPath => _logPath;
 
+  /// Sets the logging level for future writes. Messages below this level will be ignored.
   set level(Level level) => _logger.level = level;
+
+  /// Sets a custom log formatter function. This function formats each log entry before it is written.
   set logFormatter(LogFormatter formatter) => _logFormatter = formatter;
+
+  /// Sets a custom file name generator function. You can add file prefixes or change the date format.
   set fileNameGenerator(FileNameGenerator generator) => _fileNameGenerator = generator;
+
+  /// Sets a custom record handler function. This function can be used to provide additional processing
+  /// to each log record. The default processor must be called if the default behavior is desired,
+  /// but can be skipped entirely.
   set recordHandler(RecordHandler handler) => _recordHandler = handler;
 
   void finest(String message, [Object? error, StackTrace? stackTrace]) => _logger.finest(message, error, stackTrace);
@@ -71,10 +84,14 @@ class FileLogger
   void severe(String message, [Object? error, StackTrace? stackTrace]) => _logger.severe(message, error, stackTrace);
   void shout(String message, [Object? error, StackTrace? stackTrace]) => _logger.shout(message, error, stackTrace);
 
+  /// Deletes all log files. It effectively calls [deleteOldLogs] with 0 days.
+  /// This method is thread-safe and will not interfere with ongoing log writes.
   Future<void> clearLogs() async => await deleteOldLogs(0);
 
-  Future<void> deleteOldLogs(int daysOld) async
-  {
+  /// Deletes log files older than the specified number of days.
+  /// If [daysOld] is 0 or negative, all log files will be deleted.
+  /// This method is thread-safe and will not interfere with ongoing log writes.
+  Future<void> deleteOldLogs(int daysOld) async {
     DateTime thresholdDate = DateTime.now().subtract(Duration(days: daysOld));
     var directory = Directory(_logPath);
 
@@ -95,10 +112,10 @@ class FileLogger
   }
 
   String _formatLogEntry(LogRecord record) => _logFormatter(record, ++_sequenceNumber);
+
   String _getFileName(DateTime date) => _fileNameGenerator(name, date);
 
-  Future<void> _recordProcessor(LogRecord record) async
-  {
+  Future<void> _recordProcessor(LogRecord record) async {
     String entry = _formatLogEntry(record);
 
     await _writeLock.synchronized(() async {
@@ -111,8 +128,7 @@ class FileLogger
     });
   }
 
-  Future<void> _createLogPath() async
-  {
+  Future<void> _createLogPath() async {
     try {
       if (!await Directory(_logPath).exists()) {
         await Directory(_logPath).create(recursive: true);
@@ -124,18 +140,16 @@ class FileLogger
 
   void _writeToConsole(String entry) => print(entry);
 
-  Future<void> _writeToFile(DateTime date, String entry) async
-  {
+  Future<void> _writeToFile(DateTime date, String entry) async {
     try {
       var file = await _getLogFile(date);
-      await file.writeAsString(entry, mode: FileMode.writeOnlyAppend); }
-    catch (e) {
+      await file.writeAsString(entry, mode: FileMode.writeOnlyAppend);
+    } catch (e) {
       _writeToConsole('Error writing to file: $e');
     }
   }
 
-  Future<File> _getLogFile(DateTime date) async
-  {
+  Future<File> _getLogFile(DateTime date) async {
     String fileName = _getFileName(date);
     File file = File(p.join(_logPath, fileName));
 
@@ -148,8 +162,7 @@ class FileLogger
     return _backupBigLogFile(file, fileName);
   }
 
-  Future<File> _backupBigLogFile(File file, String fileName) async
-  {
+  Future<File> _backupBigLogFile(File file, String fileName) async {
     if (maxFileSize > 0 && await file.exists() && await file.length() > maxFileSize) {
       String filePath = p.join(_logPath, fileName);
       bool backedUp = false;
@@ -178,13 +191,10 @@ class FileLogger
       }
 
       var stat = await item.stat();
-      DateFormat dateFormat = DateFormat('yyyyMMdd');
-      if (dateFormat.format(stat.modified).compareTo(dateFormat.format(thresholdDate)) > 0) {
-        continue;
+      if (stat.modified.compareTo(thresholdDate) <= 0) {
+        _writeToConsole('Deleting old log file: ${item.path}');
+        await item.delete();
       }
-
-      _writeToConsole('Deleting old log file: ${item.path}');
-      await item.delete();
     }
   }
 }
