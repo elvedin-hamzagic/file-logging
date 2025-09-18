@@ -2,14 +2,16 @@ A very flexible file logger which utilizes "logging" package.
 
 ## Features
 
-This package provides a simple way to log messages to a file in a
-concurrent-safe manner. It uses the existing "logging" package, but with
-added functionalities for file handling, such as splitting logs to multiple
-files if bigger than a specified size, creating a new file for each day and
-deleting log files if they are older than a certain number of days.
+This package provides a simple and concurrent-safe way to log messages to a file.
+It builds on the existing logging package, adding file-handling features such as:
 
-Besides writing log to a file, it also provides an options to write log to
-console.
+- Splitting logs into multiple files when they exceed a specified size
+- Creating a new file for each day
+- Automatically deleting old log files after a specified retention period
+
+In addition to file logging, the package supports:
+- Writing logs to the console
+- Defining custom record handlers for extensibility
 
 ## Getting started
 
