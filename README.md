@@ -84,5 +84,5 @@ void main() {
 
 ## Additional information
 
-You can find more information about this package on GitHUb:
+You can find more information about this package on GitHub:
 https://github.com/elvedin-hamzagic/file-logging
