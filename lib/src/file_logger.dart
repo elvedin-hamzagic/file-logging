@@ -11,7 +11,7 @@ typedef RecordHandler = void Function(LogRecord record, void Function(LogRecord 
 
 class FileLogger
 {
-  static final String _defaultLogPath = '${Platform.environment['HOME']}/logs/';
+  static final String _defaultLogPath = p.join(Platform.environment['HOME'] ?? '', 'logs');
 
   FileLogger({String name = '', Level level = Level.ALL, this.logToConsole = true,
     this.logToFile = true, this.maxFileSize = 0, String? logPath}) : _logger = Logger(name)

@@ -1,4 +1,4 @@
-import 'package:file_logging/file_logging.dart';
+import 'package:file_logs/file_logs.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:test/test.dart';
@@ -9,7 +9,6 @@ void main() {
         name: 'TestLogger1', maxFileSize: 1024, logPath: './file_logs_1/');
 
     setUp(() {
-      // Additional setup goes here.
     });
 
     test('Delete old logs', () async {

@@ -1,10 +1,10 @@
-name: file_logging
+name: file_logs
 description: A file logger which utilizes "logging" package.
 version: 1.0.0
-homepage: https://github.com/elvedin-hamzagic/file-logging
-repository: https://github.com/elvedin-hamzagic/file-logging
-issue_tracker: https://github.com/elvedin-hamzagic/file-logging/issues
-documentation: https://github.com/elvedin-hamzagic/file-logging/wiki
+homepage: https://github.com/elvedin-hamzagic/file-logs
+repository: https://github.com/elvedin-hamzagic/file-logs
+issue_tracker: https://github.com/elvedin-hamzagic/file-logs/issues
+documentation: https://github.com/elvedin-hamzagic/file-logs/wiki
 license: MIT
 
 environment:

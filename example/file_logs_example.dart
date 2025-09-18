@@ -1,7 +1,7 @@
-import 'package:file_logging/file_logging.dart';
+import 'package:file_logs/file_logs.dart';
 
 Future<void> main() async {
-  final logger = FileLogger(maxFileSize: 512, logPath: './file_logs/');
+  final logger = FileLogger(maxFileSize: 512, logPath: 'file_logs');
   await logger.clearLogs();
   logger.finest('This is a finest message');
   logger.finer('This is a finer message');
