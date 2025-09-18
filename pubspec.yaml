@@ -1,7 +1,7 @@
 name: file_logs
 description: A flexible file logger based on the "logging" package, supporting file
   rotation, date-based log splitting, and custom handlers.
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/elvedin-hamzagic/file-logs
 repository: https://github.com/elvedin-hamzagic/file-logs
 issue_tracker: https://github.com/elvedin-hamzagic/file-logs/issues

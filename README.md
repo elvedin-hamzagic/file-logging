@@ -3,7 +3,7 @@ A very flexible file logger which utilizes "logging" package.
 ## Features
 
 This package provides a simple and concurrent-safe way to log messages to a file.
-It builds on the existing logging package, adding file-handling features such as:
+It builds on the existing "logging" package, adding file-handling features such as:
 
 - Splitting logs into multiple files when they exceed a specified size
 - Creating a new file for each day
@@ -15,8 +15,8 @@ In addition to file logging, the package supports:
 
 ## Getting started
 
-This package is dependent on the "logging" package, so make sure to include it
-in your `pubspec.yaml` file:
+This package is built on top of the `logging` package.
+The available log levels follow the same conventions commonly used in software development.
 
 ## Usage
 
